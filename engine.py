@@ -39,7 +39,8 @@ def main():
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
-        render_all(con, entities, screen_width, screen_height)
+        render_all(con, entities, game_map,
+                   screen_width, screen_height, colors)
 
         libtcod.console_flush()
 
@@ -53,7 +54,8 @@ def main():
 
         if move:
             dx, dy = move
-            player.move(dx, dy)
+            if not game_map.is_blocked(player.x + dx, player.y + dy):
+                player.move(dx, dy)
 
         if exit:
             return True

@@ -1,4 +1,5 @@
 import tcod as libtcod
+from input_handlers import handle_keys
 
 
 def main():
@@ -26,10 +27,22 @@ def main():
             0, player_x, player_y, '@', libtcod.BKGND_NONE)
         libtcod.console_flush()
 
-        key = libtcod.console_check_for_keypress()
+        action = handle_keys(key)
 
-        if key.vk == libtcod.KEY_ESCAPE:
+        move = action.get('move')
+        exit = action.get('exit')
+        fullscreen = action.get('fullscreen')
+
+        if move:
+            dx, dy = move
+            player_x += dx
+            player_y += dy
+
+        if exit:
             return True
+
+        if fullscreen:
+            libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
 
 if __name__ == '__main__':

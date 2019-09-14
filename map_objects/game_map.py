@@ -16,15 +16,7 @@ class GameMap:
 
         return tiles
 
-    def make_map(self):
-        # Create two rooms for demonstration purposes
-        room1 = Rect(20, 15, 10, 15)
-        room2 = Rect(35, 15, 10, 15)
-
-        self.create_room(room1)
-        self.create_room(room2)
-
-        self.create_h_tunnel(25, 40, 23)
+    def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player):
 
     def create_room(self, room):
         # go through tiles in rectangle and make them passable

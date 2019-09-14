@@ -20,7 +20,8 @@ class GameMap:
 
         return tiles
 
-    def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player):
+    def make_map(self, max_rooms, room_min_size, room_max_size, map_width,
+                 map_height, player, entities, max_monsters_per_room):
         rooms = []
         num_rooms = 0
 
@@ -69,6 +70,9 @@ class GameMap:
                         # first move vertically, then horizontally
                         self.create_v_tunnel(prev_y, new_y, prev_x)
                         self.create_h_tunnel(prev_x, new_x, new_y)
+
+                self.place_entities(new_room, entities, max_monsters_per_room)
+
                 # finally append new room to list
                 rooms.append(new_room)
                 num_rooms += 1

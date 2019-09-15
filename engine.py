@@ -19,6 +19,10 @@ def main():
     panel_height = 7
     panel_y = screen_height - panel_height
 
+    message_x = bar_width + 2
+    message_width = screen_width - bar_width - 2
+    message_height = panel_height - 1
+
     map_width = 80
     map_height = 43
 

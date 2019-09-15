@@ -4,9 +4,10 @@ from components.fighter import Fighter
 from death_functions import kill_monster, kill_player
 from entity import Entity, get_blocking_entities_at_location
 from fov_functions import initialize_fov, recompute_fov
-from game_messages import MessageLog
+from game_messages import MessageLog, Message
 from game_states import GameStates
 from input_handlers import handle_keys
+from components.inventory import Inventory
 from map_objects.game_map import GameMap
 from render_functions import clear_all, render_all, RenderOrder
 
@@ -44,8 +45,9 @@ def main():
               'light_ground': libtcod.Color(200, 180, 50)}
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
+    inventory_component = Inventory(26)
     player = Entity(0, 0, '@', libtcod.white, 'Player',
-                    blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component)
+                    blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component, inventory=inventory_component)
     entities = [player]
 
     libtcod.console_set_custom_font(
@@ -91,6 +93,7 @@ def main():
         action = handle_keys(key)
 
         move = action.get('move')
+        pickup = action.get('pickup')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
@@ -114,6 +117,17 @@ def main():
                     fov_recompute = True
 
             game_state = GameStates.ENEMY_TURN
+
+        elif pickup and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.item and entity.x == player.x and entity.y == player.y:
+                    pickup_results = player.inventory.add_item(entity)
+                    player_turn_results.extend(pickup_results)
+
+                    break
+            else:
+                message_log.add_message(
+                    Message('There is nothing here to pick up', libtcod.yellow))
 
         if exit:
             return True

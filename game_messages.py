@@ -18,11 +18,11 @@ class MessageLog:
 
     def add_message(self, message):
         # Split the message if needed
-        new_msg_lines = textwrap.wrap(message.text, self.width,)
+        new_msg_lines = textwrap.wrap(message.text, self.width)
 
         for line in new_msg_lines:
             # if buffer is full, remove first line
-            if len(self.message) == self.height:
+            if len(self.messages) == self.height:
                 del self.messages[0]
 
             # Add new ine as Message object
